@@ -4,9 +4,11 @@ CREATE TABLE IF NOT EXISTS movie
 	name VARCHAR(100),
 	sf_url VARCHAR(255),
 	imdb_url VARCHAR(255),
+	premier_date VARCHAR(50),
+	age_limit VARCHAR(100),
 	updated_datetime DATETIME NOT NULL,
 	PRIMARY KEY (id),
-	UNIQUE (sf_url),
+	UNIQUE (sf_url)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS cinema

@@ -12,15 +12,21 @@
 // Setup express app to server requests and document storage to serve documents
 var express = require('express'),
     bodyParser = require('body-parser'),
-    movieController = require('./controllers/movie-controller.js');
-    cinemaController = require('./controllers/cinema-controller.js');
-    screeningController = require('./controllers/screening-controller.js');
-    crawler = require('./controllers/crawler.js');
+    MovieController = require('./controllers/movie-controller.js');
+    CinemaController = require('./controllers/cinema-controller.js');
+    ScreeningController = require('./controllers/screening-controller.js');
+    SFCrawler = require('./controllers/sf-crawler.js');
     app = express();
 
 // app.use(express.bodyParser.json());
 
 app.get('/movies', function(req, res) {
+  sfCrawler = new SFCrawler({
+    movieController: new MovieController()
+  });
+
+  sfCrawler.crawlMovieList();
+
   res.status(200).send({"Hoppala":"boppala"});
 });
 

@@ -26,7 +26,7 @@ ScreeningController.prototype.createScreening = function (options) {
 };
 
 
-module.exports = new ScreeningController();
+module.exports = ScreeningController;
 
 
 

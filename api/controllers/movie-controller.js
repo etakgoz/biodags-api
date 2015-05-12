@@ -13,7 +13,18 @@ var Movie = function (options) {
 /**
  * MovieController Constructor
  */
-var MovieController = function() {};
+var MovieController = function() {
+	var mysql      = require('mysql');
+
+	this.connection = mysql.createConnection({
+	  host     : 'localhost',
+	  user     : 'biodags_adm',
+	  password : '0acidrain6',
+	  database: 'biodags_db'
+	});
+
+	this.connection.connect();
+};
 
 /**
  * Returns the movie with the given id or false
@@ -22,6 +33,22 @@ var MovieController = function() {};
  */
 MovieController.prototype.get = function (id) {
 	return false;
+};
+
+
+/**
+ * Returns the movie with the given SF url or false
+ * @param  {mixed} id movie id
+ * @return {mixed}    movie object on success otherwise false
+ */
+MovieController.prototype.getByUrl = function (url, callback) {
+	var query = "SELECT * FROM movie WHERE sf_url='" + url + "'";
+
+	this.connection.query(query, function(err, rows, fields) {
+	  if (err) throw err;
+
+	  callback(rows)
+	});
 };
 
 /**
@@ -53,7 +80,7 @@ MovieController.prototype.update = function (movie) {
 	return false;
 };
 
-module.exports = new MovieController();
+module.exports = MovieController;
 
 
 

@@ -54,7 +54,7 @@ CinemaController.prototype.update = function (cinema) {
 };
 
 
-module.exports = new CinemaController();
+module.exports = CinemaController;
 
 
 
