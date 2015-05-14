@@ -7,6 +7,8 @@ var Movie = function (options) {
 	this.name = options.name;
 	this.sfUrl = options.sf_url;
 	this.imdbUrl = options.imdb_url;
+	this.premierDate = options.premier_date;
+	this.ageLimit = options.age_limit;
 	this.updatedDatetime = options.updated_datetime;
 };
 
@@ -32,7 +34,11 @@ var MovieController = function() {
  * @return {mixed}    movie object on success otherwise false
  */
 MovieController.prototype.get = function (id) {
-	return false;
+	var query = "SELECT * FROM movie WHERE id=" + id;
+
+	this.connection.query(query, function(err, rows, fields) {
+		callback(rows, err)
+	});
 };
 
 
@@ -45,9 +51,7 @@ MovieController.prototype.getByUrl = function (url, callback) {
 	var query = "SELECT * FROM movie WHERE sf_url='" + url + "'";
 
 	this.connection.query(query, function(err, rows, fields) {
-	  if (err) throw err;
-
-	  callback(rows)
+		callback(rows, err)
 	});
 };
 
@@ -56,7 +60,7 @@ MovieController.prototype.getByUrl = function (url, callback) {
  * @param  {object} options movie options
  * @return {object} movie object
  */
-MovieController.prototype.createMovie = function (options) {
+MovieController.prototype.create = function (options) {
 	return new Movie(options);
 };
 
@@ -66,8 +70,26 @@ MovieController.prototype.createMovie = function (options) {
  * @param  {mixed} id movie id
  * @return {mixed}  movie (with db id) or false
  */
-MovieController.prototype.insert = function (movie) {
-	return false;
+MovieController.prototype.insert = function (movie, callback) {
+	var valueStr = '(NULL, "' +
+					movie.name + '", "' +
+					movie.sfUrl + '", "' +
+					movie.imdbUrl + '", "' +
+					movie.premierDate + '", "' +
+					movie.ageLimit + '", "' +
+					movie.updatedDatetime + '")';
+
+	var query = 'INSERT INTO movie (id, name, sf_url, imdb_url, premier_date, age_limit, updated_datetime)' +
+				' VALUES ' + valueStr;
+
+
+	this.connection.query(query, function(err, info) {
+		if (!err) {
+			movie.id = info.insertId;
+		}
+
+		callback(movie, err);
+	});
 };
 
 

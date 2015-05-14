@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS movie
 	name VARCHAR(100),
 	sf_url VARCHAR(255),
 	imdb_url VARCHAR(255),
-	premier_date VARCHAR(50),
-	age_limit VARCHAR(100),
+	premier_date VARCHAR(50) DEFAULT '',
+	age_limit VARCHAR(100) DEFAULT '',
 	updated_datetime DATETIME NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE (sf_url)
@@ -18,12 +18,13 @@ CREATE TABLE IF NOT EXISTS cinema
 	city VARCHAR(100)
 	updated_datetime DATETIME NOT NULL,
 	PRIMARY KEY (id),
-	INDEX (city)
+	UNIQUE (city, name)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS screening
 (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	screening_time DATETIME NOT NULL,
 	movie_id INT UNSIGNED NOT NULL,
 	cinema_id INT UNSIGNED NOT NULL,
 	places_left INT UNSIGNED NOT NULL,

@@ -20,14 +20,30 @@ var express = require('express'),
 
 // app.use(express.bodyParser.json());
 
-app.get('/movies', function(req, res) {
+app.get('/crawl', function(req, res) {
+
+  var item = req.query.item,
+      message = '';
+
+  for (var i in req.params) {
+    console.log("param: " + i);
+  }
+
   sfCrawler = new SFCrawler({
     movieController: new MovieController()
   });
 
-  sfCrawler.crawlMovieList();
-
-  res.status(200).send({"Hoppala":"boppala"});
+  if (item === "movies") {
+    sfCrawler.crawlMovieList();
+    message = 'Started crawling movies';
+    res.status(200).send({"Status": message});
+  } else if (item === "cinemas") {
+    sfCrawler.crawlCinemas();
+    message = 'Started crawling cinemas';
+    res.status(200).send({"Status": message});
+  } else {
+    res.status(500).send({"Error": "Item to crawl does not exist"});
+  }
 });
 
 

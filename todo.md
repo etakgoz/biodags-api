@@ -1,0 +1,1 @@
+Gets should return proper objects
