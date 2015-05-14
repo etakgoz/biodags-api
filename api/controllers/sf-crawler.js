@@ -1,7 +1,7 @@
 var Crawler = require("crawler");
 
 
-var SF_ABS_URL = "http://www.sf.se/";
+var SF_ABS_URL = "http://www.sf.se";
 var SF_MOVIELIST_URL = "http://www.sf.se/filmer/";
 var SF_CINEMALIST_URL = "http://www.sf.se/biografer/";
 var DEFAULT_CITY = "Stockholm";
@@ -13,6 +13,7 @@ var CRAWL_DATETIME = "2015-05-12 00:00:00";
  */
 var SFCrawler = function(options) {
 	this.movieController = options.movieController;
+	this.cinemaController = options.cinemaController;
 };
 
 
@@ -34,13 +35,16 @@ SFCrawler.prototype.crawlMovieList = function () {
 	        		premierDate = $(li).find(".textPremiereDate").text(),
 	        		ageLimit = $(li).find(".textAgeFrom").text();
 
-	        	movieController.getByUrl(movieSFUrl, function (rows, err) {
+	        	movieController.getByUrl(movieSFUrl, function (movie, err) {
 	        		if (err) {
 	        			console.error(err);
 	        			return;
 	        		}
 
-	        		if (rows.length === 0) {
+	        		if (movie) {
+	        			console.log("Movie " + movieName + " exist in db. Just need to update screenings.\n");
+	        			// crawl screenings here
+	        		} else {
 	        			console.log("Movie " + movieName + " does not exist in db. Need to insert movie in the db.\n");
 	        			var movie = movieController.create({
 	        				"name": movieName,
@@ -61,10 +65,6 @@ SFCrawler.prototype.crawlMovieList = function () {
 
 	        				// crawl screenings here
 	        			});
-	        		} else {
-	        			console.log("Movie " + movieName + " exist in db. Just need to update screenings.\n");
-
-	        			// crawl screenings here
 	        		}
 	        	});
 	        });
@@ -88,27 +88,27 @@ SFCrawler.prototype.crawlCinemas = function () {
 				return;
 			}
 
-	        $('#subChooseCinemaMenu li').each(function(index, li) {
+	        $('#SubChooseCinemaMenu li').each(function(index, li) {
 	        	var cinemaName = $(li).find("a").text(),
 	        		cinemaSFUrl = SF_ABS_URL + $(li).find("a").attr("href"),
 	        		cinemaCity = DEFAULT_CITY;
 
 
-	        	cinemaController.getByName(DEFAULT_CITY, cinemaName, function (rows, err) {
+	        	cinemaController.getByName(DEFAULT_CITY, cinemaName, function (cinema, err) {
 					if (err) {
 						console.error(err);
 						return;
 					}
 
-					if (rows.length > 0) {
-	    				console.log("Cinema " + cinema.name + " already exists. Id is " + rows[0].id + "\n");
+					if (cinema) {
+	    				console.log("Cinema " + cinema.name + " already exists. Id is " + cinema.id + "\n");
 	    				return;
 					}
 
-	    			var cinema = cinemaController.create({
-	    				"name": movieName,
-	    				"sf_url": movieSFUrl,
+	    			cinema = cinemaController.create({
+	    				"name": cinemaName,
 	    				"city": DEFAULT_CITY,
+	    				"sf_url": cinemaSFUrl,
 	    				"updated_datetime": CRAWL_DATETIME
 	    			});
 
@@ -120,9 +120,8 @@ SFCrawler.prototype.crawlCinemas = function () {
 
 	    				console.log("Cinema " + cinema.name + " inserted to the db. Id is " + cinema.id + "\n");
 
-	    				// crawl screenings here
 	    			});
-	        	};
+	        	});
 
 
 	        });

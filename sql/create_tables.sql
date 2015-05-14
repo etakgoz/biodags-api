@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS cinema
 (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name VARCHAR(100),
-	city VARCHAR(100)
+	city VARCHAR(100),
+	sf_url VARCHAR(255),
 	updated_datetime DATETIME NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE (city, name)

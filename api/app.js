@@ -11,6 +11,7 @@
 
 // Setup express app to server requests and document storage to serve documents
 var express = require('express'),
+    compress = require('compression'),
     bodyParser = require('body-parser'),
     MovieController = require('./controllers/movie-controller.js');
     CinemaController = require('./controllers/cinema-controller.js');
@@ -25,12 +26,9 @@ app.get('/crawl', function(req, res) {
   var item = req.query.item,
       message = '';
 
-  for (var i in req.params) {
-    console.log("param: " + i);
-  }
-
   sfCrawler = new SFCrawler({
-    movieController: new MovieController()
+    movieController: new MovieController(),
+    cinemaController: new CinemaController()
   });
 
   if (item === "movies") {
@@ -47,8 +45,86 @@ app.get('/crawl', function(req, res) {
 });
 
 
+app.get('/movies', function (req, res) {
+  var movieController = new MovieController();
+
+  movieController.list(function (movies, err) {
+    if (err) {
+      console.error(err);
+      res.status(500).send({"Error": "Failed fetching movies"});
+      return;
+    }
+
+    res.status(200).send(JSON.stringify({"data": movies}, null ,2));
+
+  });
+});
+
+
+app.get('/movies/:id', function(req, res) {
+
+  var itemId = parseInt(req.params.id, 10),
+      movieController = new MovieController();
+
+  movieController.get(itemId, function (movie, err) {
+    if (err) {
+      console.error(err);
+      res.status(500).send({"Error": "Failed fetching movie"});
+      return;
+    }
+
+    if (!movie) {
+      res.status(404).send({"Error": "Failed fetching movie"});
+      return;
+    }
+
+    res.status(200).send(JSON.stringify({"data": movie}, null, 2));
+
+  });
+});
+
+
+app.get('/cinemas', function (req, res) {
+  var cinemaController = new CinemaController();
+
+  cinemaController.list(function (cinemas, err) {
+    if (err) {
+      console.error(err);
+      res.status(500).send({"Error": "Failed fetching cinemas"});
+      return;
+    }
+
+    res.status(200).send(JSON.stringify({"data": cinemas}, null ,2));
+
+  });
+});
+
+app.get('/cinemas/:id', function(req, res) {
+
+  var itemId = parseInt(req.params.id, 10),
+      cinemaController = new CinemaController();
+
+  cinemaController.get(itemId, function (cinema, err) {
+    if (err) {
+      console.error(err);
+      res.status(500).send({"Error": "Failed fetching movie"});
+      return;
+    }
+
+    if (!cinema) {
+      res.status(404).send({"Error": "Failed fetching movie"});
+      return;
+    }
+
+    res.status(200).send(JSON.stringify({"data": cinema}, null ,2));
+
+  });
+});
+
 // Serve the frontend app
 app.use('/app/', express.static(__dirname + '/../frontend'));
+
+app.use(compress());
 
 // Listen the port 3412 for the requests
 app.listen(process.env.PORT || 3412);

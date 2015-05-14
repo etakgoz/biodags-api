@@ -33,11 +33,34 @@ var MovieController = function() {
  * @param  {mixed} id movie id
  * @return {mixed}    movie object on success otherwise false
  */
-MovieController.prototype.get = function (id) {
-	var query = "SELECT * FROM movie WHERE id=" + id;
+MovieController.prototype.get = function (id, callback) {
+	var query = "SELECT * FROM movie WHERE id=" + id,
+		movieController = this;
 
 	this.connection.query(query, function(err, rows, fields) {
-		callback(rows, err)
+		var movie = false;
+		if (!err && rows.length > 0) {
+			movie = movieController.create(rows[0])
+		}
+
+		callback(movie, err);
+	});
+};
+
+MovieController.prototype.list = function (callback) {
+	var query = "SELECT * FROM movie",
+		movieController = this;
+
+	this.connection.query(query, function(err, rows, fields) {
+		var movies = [];
+		if (!err && rows.length > 0) {
+			rows.forEach(function (row, index) {
+				movies.push(movieController.create(row));
+			});
+
+		}
+
+		callback(movies, err);
 	});
 };
 
@@ -48,10 +71,16 @@ MovieController.prototype.get = function (id) {
  * @return {mixed}    movie object on success otherwise false
  */
 MovieController.prototype.getByUrl = function (url, callback) {
-	var query = "SELECT * FROM movie WHERE sf_url='" + url + "'";
+	var query = "SELECT * FROM movie WHERE sf_url='" + url + "'",
+		movieController = this;
 
 	this.connection.query(query, function(err, rows, fields) {
-		callback(rows, err)
+		var movie = false;
+		if (!err && rows.length > 0) {
+			movie = movieController.create(rows[0])
+		}
+
+		callback(movie, err);
 	});
 };
 
