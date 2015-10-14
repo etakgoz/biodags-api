@@ -1,0 +1,12 @@
+temp/
+dist/
+node_modules/
+test/
+_SpecRunner.html
+.DS_Store
+test-results.xml
+bower_components/
+settings.json
+local-settings.json
+versions.json
+todo.md

@@ -1,0 +1,29 @@
+{
+  "name": "biodags - admin",
+  "version": "0.1.0",
+  "main": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "~2.0",
+    "lodash": "~3.10",
+    "bootstrap": "~3.3.5",
+    "angular": "~1.4.5",
+    "angular-route": "~1.4.5",
+    "angular-animate": "~1.4.5",
+    "angular-resource": "~1.4.5",
+    "angular-mocks": "~1.4.5",
+    "angular-ui-utils": "~0.1",
+    "angular-bootstrap": "~0.12",
+    "moment": "~2.10.6",
+    "less.js": "~2.5",
+    "lesshat": "~3.0.2",
+    "angular-cookie": "~4.0.9"
+  },
+  "resolutions": {
+    "angular": "1.4.7"
+  }
+}

@@ -1,0 +1,39 @@
+@import "variables.less";
+@import "mixins.less";
+@import "typography.less";
+@import "animations.less";
+@import "forms.less";
+@import "controls.less";
+@import "views.less";
+@import "grid.less";
+@import "footer.less";
+
+@import "app-view.less";
+
+a:focus {
+    outline: none;
+}
+
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+a, p, li, span, h1, h2, h3, h4 {
+    text-rendering: optimizeLegibility;
+}
+
+
+html, body {
+    -webkit-font-smoothing: antialiased;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+    li {
+        padding: 5px 0;
+    }
+}

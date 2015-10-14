@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <link href="app.less" type="text/css" rel="stylesheet/less">
+
+    <!--<link data-concat="false" rel="stylesheet" href="dist/assets/img/icons.data.svg.css">
+    <script data-concat="false" src="dist/assets/img/grunticon.loader.js"></script>
+    <noscript><link data-concat="false" href="dist/assets/img/icons.fallback.css" rel="stylesheet"></noscript>-->
+</head>
+<body>
+
+    <!-- JS from Bower Components -->
+    <script src="bower_components/less.js/dist/less.js" data-concat="false"></script>
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+
+    <script src="bower_components/angular/angular.js"></script>
+
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+    <script src="bower_components/angular-cookie/angular-cookie.js"></script>
+    <!-- Add New Bower Component JS Above -->
+
+
+    <!-- Main App JS -->
+    <script src="app.js"></script>
+
+    <script src="common/directive/app-footer/app-footer.js"></script>
+    <script src="common/directive/app-navigation/app-navigation.js"></script>
+
+    <script src="services/movie-service.js"></script>
+    <script src="services/status-service.js"></script>
+
+    <script src="movie/partial/movies/movies.js"></script>
+    <script src="movie/partial/movie/movie.js"></script>
+    <script src="user/partial/login/login.js"></script>
+    <script src="common/partial/api-status/api-status.js"></script>
+
+
+    <!-- Add New Component JS Above -->
+
+    <div id="app-container">
+        <app-navigation></app-navigation>
+        <div>
+            <div id="content">
+                <div ng-view autoscroll="true"></div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+
+
+</body>
+</html>

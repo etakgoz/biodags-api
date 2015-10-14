@@ -1,0 +1,9 @@
+<div class="app-navigation">
+    <div class="navigation container" role="navigation" id="navigation" ng-hide="currentMenuItem === 'login'">
+        <ul class="nav nav-pills">
+          <li role="presentation" ng-class="{'active': currentMenuItem === 'movies'}"><a href="#/movies/">Movies</a></li>
+          <li role="presentation" ng-class="{'active': currentMenuItem === 'status'}"><a href="#/status/">API Status</a></li>
+          <li role="presentation" ng-click="logout();"><a href="javascript:void(0)">Logout</a></li>
+        </ul>
+    </div>
+</div>
