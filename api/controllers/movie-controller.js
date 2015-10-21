@@ -15,15 +15,15 @@ var Movie = function (options) {
 /**
  * MovieController Constructor
  */
-var MovieController = function() {
+var MovieController = function(apiSettings) {
 	var mysql      = require('mysql');
 
-	this.connection = mysql.createConnection({
-	  host     : 'localhost',
-	  user     : 'biodags_adm',
-	  password : '0acidrain6',
-	  database: 'biodags_db'
-	});
+    this.connection = mysql.createConnection({
+        host     : apiSettings.db["host"],
+        user     : apiSettings.db["user"],
+        password : apiSettings.db["password"],
+        database : apiSettings.db["database"]
+    });
 
 	this.connection.connect();
 };

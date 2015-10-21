@@ -17,71 +17,24 @@ var express = require('express'),
     CinemaController = require('./controllers/cinema-controller.js');
     ScreeningController = require('./controllers/screening-controller.js');
     SFCrawler = require('./controllers/sf-crawler.js');
+    API_SETTINGS = require('./configs'),
     app = express();
 
-// app.use(express.bodyParser.json());
 
-app.get('/crawl', function(req, res) {
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
 
-  var item = req.query.item,
-      message = '';
+    next();
+};
 
-  sfCrawler = new SFCrawler({
-    movieController: new MovieController(),
-    cinemaController: new CinemaController()
-  });
+app.use(allowCrossDomain);
 
-  if (item === "movies") {
-    sfCrawler.crawlMovieList();
-    message = 'Started crawling movies';
-    res.status(200).send({"Status": message});
-  } else if (item === "cinemas") {
-    sfCrawler.crawlCinemas();
-    message = 'Started crawling cinemas';
-    res.status(200).send({"Status": message});
-  } else {
-    res.status(500).send({"Error": "Item to crawl does not exist"});
-  }
-});
+app.use(bodyParser.json());
 
-
-app.get('/movies', function (req, res) {
-  var movieController = new MovieController();
-
-  movieController.list(function (movies, err) {
-    if (err) {
-      console.error(err);
-      res.status(500).send({"Error": "Failed fetching movies"});
-      return;
-    }
-
-    res.status(200).send(JSON.stringify({"data": movies}, null ,2));
-
-  });
-});
-
-
-app.get('/movies/:id', function(req, res) {
-
-  var itemId = parseInt(req.params.id, 10),
-      movieController = new MovieController();
-
-  movieController.get(itemId, function (movie, err) {
-    if (err) {
-      console.error(err);
-      res.status(500).send({"Error": "Failed fetching movie"});
-      return;
-    }
-
-    if (!movie) {
-      res.status(404).send({"Error": "Failed fetching movie"});
-      return;
-    }
-
-    res.status(200).send(JSON.stringify({"data": movie}, null, 2));
-
-  });
-});
+var router = require('./router')(app);
 
 
 app.get('/cinemas', function (req, res) {
@@ -120,6 +73,7 @@ app.get('/cinemas/:id', function(req, res) {
 
   });
 });
+*/
 
 // Serve the frontend app
 app.use('/app/', express.static(__dirname + '/../frontend'));
