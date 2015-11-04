@@ -26,6 +26,22 @@ ScreeningController.prototype.createScreening = function (options) {
 };
 
 
+// returns array of screenings
+ScreeningController.prototype.list = function (filters) {
+    return new Promise(function(resolve, reject) {
+        resolve([]);
+    };
+};
+
+
+// returns the screening with that id
+ScreeningController.prototype.get = function (id) {
+    return new Promise(function(resolve, reject) {
+        resolve({});
+    };
+};
+
+
 module.exports = ScreeningController;
 
 

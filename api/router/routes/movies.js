@@ -6,6 +6,7 @@ var express = require('express'),
 router.get('/movies', function (req, res) {
   var movieController = new MovieController(API_SETTINGS);
 
+
   movieController.list(function (movies, err) {
     if (err) {
       res.status(500).send({"Error": "Failed fetching movies"});

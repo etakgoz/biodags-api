@@ -33,35 +33,54 @@ var MovieController = function(apiSettings) {
  * @param  {mixed} id movie id
  * @return {mixed}    movie object on success otherwise false
  */
-MovieController.prototype.get = function (id, callback) {
+MovieController.prototype.get = function (id) {
 	var query = "SELECT * FROM movie WHERE id=" + id,
 		movieController = this;
 
-	this.connection.query(query, function(err, rows, fields) {
-		var movie = false;
-		if (!err && rows.length > 0) {
-			movie = movieController.create(rows[0])
-		}
-
-		callback(movie, err);
-	});
+    return new Promise(function(resolve, reject) {
+        movieController.connection.query(query, function(err, rows, fields) {
+            var movie = false;
+            if (!err && rows.length > 0) {
+                movie = movieController.create(rows[0]);
+                resolve(movie);
+            } else if (err) {
+                reject(err);
+            } else {
+                resolve(null);
+            }
+        });
+    });
 };
 
-MovieController.prototype.list = function (callback) {
+
+/**
+ * Returns the movie with the given id or false
+ * @param  {mixed} id movie id
+ * @return {mixed}    movie object on success otherwise false
+ */
+MovieController.prototype.list = function () {
 	var query = "SELECT * FROM movie",
 		movieController = this;
 
-	this.connection.query(query, function(err, rows, fields) {
-		var movies = [];
-		if (!err && rows.length > 0) {
-			rows.forEach(function (row, index) {
-				movies.push(movieController.create(row));
-			});
 
-		}
+    return new Promise(function(resolve, reject) {
+        movieController.connection.query(query, function(err, rows, fields) {
+            var movies = [];
+            if (!err && rows.length > 0) {
+                rows.forEach(function (row, index) {
+                    movies.push(movieController.create(row));
+                });
 
-		callback(movies, err);
-	});
+                revolve(movies);
+            } else if (err) {
+                reject(err);
+            } else {
+                resolve([]);
+            }
+        });
+    });
+
+
 };
 
 
@@ -70,18 +89,23 @@ MovieController.prototype.list = function (callback) {
  * @param  {mixed} id movie id
  * @return {mixed}    movie object on success otherwise false
  */
-MovieController.prototype.getByUrl = function (url, callback) {
+MovieController.prototype.getByUrl = function (url) {
 	var query = "SELECT * FROM movie WHERE sf_url='" + url + "'",
 		movieController = this;
 
-	this.connection.query(query, function(err, rows, fields) {
-		var movie = false;
-		if (!err && rows.length > 0) {
-			movie = movieController.create(rows[0])
-		}
-
-		callback(movie, err);
-	});
+    return new Promise(function(resolve, reject) {
+        movieController.connection.query(query, function(err, rows, fields) {
+            var movie = false;
+            if (!err && rows.length > 0) {
+                movie = movieController.create(rows[0]);
+                resolve(movie);
+            } else if (err) {
+                reject(err);
+            } else {
+                resolve({});
+            }
+        });
+    });
 };
 
 /**
@@ -111,14 +135,21 @@ MovieController.prototype.insert = function (movie, callback) {
 	var query = 'INSERT INTO movie (id, name, sf_url, imdb_url, premier_date, age_limit, updated_datetime)' +
 				' VALUES ' + valueStr;
 
+    var movieController = this;
 
-	this.connection.query(query, function(err, info) {
-		if (!err) {
-			movie.id = info.insertId;
-		}
 
-		callback(movie, err);
-	});
+    return new Promise(function(resolve, reject) {
+        movieController.connection.query(query, function(err, info) {
+            if (!err) {
+                movie.id = info.insertId;
+                resolve(movie);
+            } else {
+                reject(err);
+            }
+        });
+    });
+
+
 };
 
 
